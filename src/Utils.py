@@ -10,8 +10,10 @@ def convert_annotation_to_one_hot(image, num_classes=12):
     n, m = image.shape
     return np.array(OneHotEncoder(n_values=num_classes, sparse=False).fit_transform(image.reshape(-1, 1))).reshape(n, m, num_classes)
 
-def load_images(directory):
+def load_images(directory, amount=-1):
     image_paths = glob.glob(os.path.join(directory, "*.png"))
+    if amount > 0:
+        image_paths = image_paths[0:amount]
     images = []
     for image_path in image_paths:
         images.append(imread(image_path)[0:352,:])
