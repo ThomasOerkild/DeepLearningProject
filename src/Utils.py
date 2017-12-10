@@ -24,14 +24,17 @@ def load_annotations(directory):
     return list(map(convert_annotation_to_one_hot, annotations))
 
 def get_class_balance_vector(directory):
-    annotations = np.argmax(load_annotations(directory), axis=-1)
+    annotations = np.argmax(np.array(load_annotations(directory)), axis=-1)
     num_classes = len(np.unique(annotations))
-    total_pixels = np.product(np.shape(annotations))
     freq = np.zeros(num_classes)
     for i in range(num_classes):
-        freq[i] = np.sum(annotations==i)
+        total_pixels = np.sum([np.sum(annotations[j]==i)>0 for j in range(len(annotations))]) * np.shape(annotations)[1] * np.shape(annotations)[2]
+        freq[i] = np.sum(annotations==i) / total_pixels
+    
     med_freq = np.median(freq)
-    return np.divide(freq, med_freq)
+    balance_vector = np.divide(med_freq, freq)
+    balance_vector[-1] = 0.0
+    return balance_vector
 
 class BatchProcessor:
 
