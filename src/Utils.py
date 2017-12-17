@@ -5,6 +5,7 @@ from skimage.io import imread
 import glob
 import tensorflow as tf
 
+test_images=["0001TP_008550.png","Seq05VD_f00000.png","Seq05VD_f05100.png"]
 
 def convert_annotation_to_one_hot(image, num_classes=12):
     n, m = image.shape
@@ -22,6 +23,14 @@ def load_images(directory, amount=-1):
 def load_annotations(directory):
     annotations = load_images(directory)
     return list(map(convert_annotation_to_one_hot, annotations))
+
+def load_test_data():
+    images = []
+    annotations = []
+    for im in test_images:
+        images.append(imread(os.path.join("..","Data", "CamVid","test", im))[0:352,:])
+        annotations.append(imread(os.path.join("..","Data", "CamVid","testannot", im))[0:352,:])
+    return images, annotations
 
 def get_class_balance_vector(directory):
     annotations = np.argmax(np.array(load_annotations(directory)), axis=-1)
