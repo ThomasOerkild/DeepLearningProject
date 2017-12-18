@@ -70,6 +70,12 @@ def unpool_with_argmax(pool, ind, name = None, ksize=[1, 2, 2, 1]):
 
     """
        Unpooling layer after max_pool_with_argmax.
+       
+       SOURCE:
+       Author: Pepslee (https://github.com/Pepslee)
+       Date: June 9th 2017
+       Link: https://github.com/tensorflow/tensorflow/issues/2169 
+       
        Args:
            pool:   max pooled output tensor
            ind:      argmax indices
